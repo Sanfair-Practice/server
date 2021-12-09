@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  traefik:
+    container_name: "${PROJECT_NAME}_traefik"
+    image: traefik:v2.0
+    command: --api.insecure=true --providers.docker
+    networks:
+      - frontend
+      - backend
+    ports:
+      - '80:80'
+      - '8080:8080'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+networks:
+  default:
+    name: ${PROJECT_NAME}_default
+  frontend:
+    external:
+      name: ${FRONTEND_NETWORK}
+  backend:
+    external:
+      name: ${BACKEND_NETWORK}
